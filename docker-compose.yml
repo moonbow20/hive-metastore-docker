@@ -18,10 +18,11 @@ services:
       - MINIO_ACCESS_KEY=accesskey
       - MINIO_SECRET_KEY=secretkey
     volumes:
-      - /data1/minio:/data
+      - /data:/data
     ports:
       - 9000:9000
-    command: server /data
+      - 9090:9090
+    command: server /data --console-address ":9090"
 
   hive-metastore:
     build: .
@@ -30,3 +31,4 @@ services:
     - 9083:9083
     depends_on:
       - mariadb
+      - minio
