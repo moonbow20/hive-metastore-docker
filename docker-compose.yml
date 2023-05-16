@@ -18,11 +18,24 @@ services:
       - MINIO_ACCESS_KEY=accesskey
       - MINIO_SECRET_KEY=secretkey
     volumes:
-      - /data:/data
+      - ./data:/data
     ports:
       - 9000:9000
       - 9090:9090
     command: server /data --console-address ":9090"
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:9000 accesskey secretkey;
+      /usr/bin/mc rm -r --force myminio/spark;
+      /usr/bin/mc mb myminio/spark;
+      /usr/bin/mc policy download myminio/spark;
+      exit 0;
+      "
 
   hive-metastore:
     build: .
@@ -32,3 +45,4 @@ services:
     depends_on:
       - mariadb
       - minio
+      - createbuckets
