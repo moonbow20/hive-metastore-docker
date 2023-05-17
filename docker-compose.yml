@@ -31,9 +31,9 @@ services:
     entrypoint: >
       /bin/sh -c "
       /usr/bin/mc config host add myminio http://minio:9000 accesskey secretkey;
-      /usr/bin/mc rm -r --force myminio/spark;
-      /usr/bin/mc mb myminio/spark;
-      /usr/bin/mc policy download myminio/spark;
+      /usr/bin/mc rm -r --force myminio/mydata-tap-dev-s3-etl;
+      /usr/bin/mc mb myminio/mydata-tap-dev-s3-etl;
+      /usr/bin/mc policy download myminio/mydata-tap-dev-s3-etl;
       exit 0;
       "
 
