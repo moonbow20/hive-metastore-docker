@@ -14,7 +14,7 @@
     </property>
     <property>
         <name>metastore.warehouse.dir</name>
-        <value>s3a://mydata-tap-dev-s3-etl/</value>
+        <value>s3a://mydata-tap-dev-s3-datalake/</value>
     </property>
     <property>
         <name>javax.jdo.option.ConnectionDriverName</name>
@@ -38,11 +38,11 @@
 
     <property>
         <name>fs.s3a.access.key</name>
-        <value>accesskey</value>
+        <value>minioadmin</value>
     </property>
     <property>
         <name>fs.s3a.secret.key</name>
-        <value>secretkey</value>
+        <value>minioadmin</value>
     </property>
     <property>
         <name>fs.s3a.endpoint</name>

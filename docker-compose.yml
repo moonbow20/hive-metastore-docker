@@ -15,8 +15,8 @@ services:
   minio:
     image: minio/minio
     environment:
-      - MINIO_ACCESS_KEY=accesskey
-      - MINIO_SECRET_KEY=secretkey
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
       - MINIO_PROMETHEUS_AUTH_TYPE=public
       - MINIO_PROMETHEUS_URL=http://prometheus:9090
       - MINIO_PROMETHEUS_JOB_ID=minio-job
@@ -33,10 +33,13 @@ services:
       - minio
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc config host add myminio http://minio:9000 accesskey secretkey;
-      /usr/bin/mc rm -r --force myminio/mydata-tap-dev-s3-etl;
-      /usr/bin/mc mb myminio/mydata-tap-dev-s3-etl;
-      /usr/bin/mc policy download myminio/mydata-tap-dev-s3-etl;
+      /usr/bin/mc config host add local http://minio:9000 or minioadmin minioadmin;
+      /usr/bin/mc rm -r --force local/mydata-tap-dev-s3-etl;
+      /usr/bin/mc mb local/mydata-tap-dev-s3-etl;
+      /usr/bin/mc policy download local/mydata-tap-dev-s3-etl;
+      /usr/bin/mc rm -r --force local/mydata-tap-dev-s3-datalake;
+      /usr/bin/mc mb local/mydata-tap-dev-s3-datalake;
+      /usr/bin/mc policy download local/mydata-tap-dev-s3-datalake;
       exit 0;
       "
 
