@@ -3,8 +3,8 @@ version: "2"
 services:
   mariadb:
     image: mariadb:latest
-    ports:
-      - 3306:3306
+#    ports:
+#      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_USER: admin
@@ -17,6 +17,9 @@ services:
     environment:
       - MINIO_ACCESS_KEY=accesskey
       - MINIO_SECRET_KEY=secretkey
+      - MINIO_PROMETHEUS_AUTH_TYPE=public
+      - MINIO_PROMETHEUS_URL=http://prometheus:9090
+      - MINIO_PROMETHEUS_JOB_ID=minio-job
     volumes:
       - ./data:/data
     ports:
@@ -36,6 +39,13 @@ services:
       /usr/bin/mc policy download myminio/mydata-tap-dev-s3-etl;
       exit 0;
       "
+
+  prometheus:
+    image: prom/prometheus
+#    ports:
+#      - 9090:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
 
   hive-metastore:
     build: .
