@@ -1,15 +1,14 @@
-version: "2"
-
 services:
-  mariadb:
-    image: mariadb:latest
-#    ports:
-#      - 3306:3306
+  db:
+    image: postgres
+    shm_size: 128mb
+    hostname: postgres
+    ports:
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
-      MYSQL_DATABASE: metastore_db
+      - "POSTGRES_DB=metastore_db"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
 
   # make sure that you specify correct volume to be mounted
   minio:
@@ -50,12 +49,16 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
 
-  hive-metastore:
+  hive:
     build: .
-    image: hive-metastore:latest
+    image: tap/hive:latest
     ports:
-    - 9083:9083
+      - 9083:9083
+    volumes:
+      - type: bind
+        source: conf/metastore-site.xml
+        target: /opt/hive-metastore/conf/metastore-site.xml
     depends_on:
-      - mariadb
+      - db
       - minio
       - createbuckets
