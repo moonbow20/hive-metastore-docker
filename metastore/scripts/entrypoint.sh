@@ -1,8 +1,8 @@
 #!/bin/sh
 
 
-export HADOOP_HOME=/opt/hadoop
-export HIVE_HOME=/opt/hive-metastore
+# export HADOOP_HOME=/opt/hadoop
+# export HIVE_HOME=/opt/hive-metastore
 
 export HADOOP_CLASSPATH=$(find $HADOOP_HOME -name "aws-java-sdk-bundle*.jar" | head -n 1):$(find $HADOOP_HOME -name "hadoop-aws-*.jar" | head -n 1)
 export JAVA_HOME=/usr/local/openjdk-8
